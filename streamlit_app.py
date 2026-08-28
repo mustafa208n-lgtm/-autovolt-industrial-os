@@ -21,7 +21,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 2️⃣ قاموس اللغات الشامل والديناميكي المحدث للصناديق
+# 2️⃣ قاموس اللغات الشامل والديناميكي المحدث للسبعة صناديق
 TRANSLATION_DICT = {
     "English": {
         "title": "Sovereign Factory Platform — Europe Hub",
@@ -76,7 +76,7 @@ TRANSLATION_DICT = {
     }
 }
 
-# 3️⃣ إدارة حالة الجلسة والتأمين الحصين
+# 3️⃣ إدارة حالة الجلسة والتأمين الحصين البنيوي
 if "token" not in st.session_state:
     st.session_state["token"] = None
     st.session_state["role"] = None
@@ -104,7 +104,7 @@ if not st.session_state["token"]:
             st.error("🚨 Access Denied. Cryptographic Key Signature Invalidation.")
     st.stop()
 
-# 4️⃣ نطاق الصلاحية الآمن (Authorized Scope) — يتم بناؤه بعد الدخول
+# 4️⃣ نطاق الصلاحية الآمن (Authorized Scope) — يتم بناؤه بعد الدخول الفعلي
 st.sidebar.header("📡 IoT Real-Time Inputs")
 selected_lang = st.sidebar.selectbox("🌐 Sovereign Matrix Language:", ["English", "Deutsch", "Français"])
 pack = TRANSLATION_DICT[selected_lang]
@@ -117,47 +117,50 @@ sim_vibe = float(1.6 + 0.04 * load_slider)
 sim_temp = float(74.0 + 0.22 * load_slider)
 risk_prob = min(max((load_slider * 0.35) + (fatigue_slider * 0.4), 5.0), 99.9)
 
-# 🔊 دالة ذكية لإجبار التاب على كسر الكتم وتوليد رنين إنذار حاد داخلي فوراً رغماً عن قيود الـ iframe
+# 🔊 شفرة توليد ذبذبات الرنين الميكانيكي المستقلة والنافذة عبر قيود المتصفحات والسيرفرات
 def play_sound(audio_type):
     if audio_type == "alarm":
+        # رنين حاد ميكانيكي متأرجح متقطع التردد يخترق كتم التاب والسيرفرات السحابية
         js_code = """
         <script>
         var context = new (window.AudioContext || window.webkitAudioContext)();
         var osc = context.createOscillator();
         var gainNode = context.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(659.25, context.currentTime); // رنين ميكانيكي متأرجح حاد e5
-        osc.frequency.linearRampToValueAtTime(987.77, context.currentTime + 0.2); // b5
-        osc.frequency.linearRampToValueAtTime(659.25, context.currentTime + 0.4);
-        gainNode.gain.setValueAtTime(0.3, context.currentTime);
+        osc.type = 'sawtooth'; // موجة حادة لإنتاج صوت صافرة إنذار صناعية واضحة
+        osc.frequency.setValueAtTime(659.25, context.currentTime); // تردد نغمة e5 الحادة
+        osc.frequency.linearRampToValueAtTime(987.77, context.currentTime + 0.25); // b5 الارتفاع والاهتزاز
+        osc.frequency.linearRampToValueAtTime(659.25, context.currentTime + 0.5);
+        gainNode.gain.setValueAtTime(0.35, context.currentTime); // مستوى صوت مسموع وقوي
         osc.connect(gainNode);
         gainNode.connect(context.destination);
         osc.start();
-        setTimeout(function(){ osc.stop(); }, 700);
+        setTimeout(function(){ osc.stop(); }, 900);
         </script>
         """
     else:
+        # نغمة نجاح مالية ناعمة وقصيرة عند تنفيذ صفقات الـ 5%
         js_code = """
         <script>
         var context = new (window.AudioContext || window.webkitAudioContext)();
         var osc = context.createOscillator();
         var gainNode = context.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(1174.66, context.currentTime); // رنين مالي فوري d6
+        osc.frequency.setValueAtTime(1046.50, context.currentTime); // نغمة الرنين المالي c6
         gainNode.gain.setValueAtTime(0.2, context.currentTime);
         osc.connect(gainNode);
         gainNode.connect(context.destination);
         osc.start();
-        setTimeout(function(){ osc.stop(); }, 250);
+        setTimeout(function(){ osc.stop(); }, 300);
         </script>
         """
     st.markdown(js_code, unsafe_allow_html=True)
 
 st.sidebar.markdown(f"⏱️ **Temporal Anchor:**\n`{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}`")
 
-# 🔘 زر فيزيائي حاسم لتمكين الصوت وتخطي قيود حظر متصفحات الـ Tab بشكل مباشر
+# 🚨 تفعيل التوجيه الصوتي الشرطي: ربط راية التحذير والإنذار بالزر لكسر كتم متصفح التاب فوراً
 if sim_temp > 92.0 or risk_prob > 55.0:
     st.markdown(f'<div class="neon-border-red">{pack["alarm"]}</div>', unsafe_allow_html=True)
+    # تفعيل زر الإنذار القسري في القائمة الجانبية لتخطي حظر التاب
     if st.sidebar.button("🔊 Force Enable Alarm Ringtone", use_container_width=True):
         play_sound("alarm")
 else:
@@ -199,8 +202,9 @@ elif "Box 3:" in operational_box:
 
 elif "Box 4 & 3:" in operational_box:
     st.markdown(f"#### 🪪 {pack['b4_t']}")
+    st.info(pack['b4_i'])
     
-    # 🆕 الميزة الأولى المدمجة: شاشة مخصصة تفاعلية للورش والموردين لرفع وحقن السلع الحقيقية وتحديث المخزن فوراً
+    # ميزة لوحة تحكم إدارة المخزن والقطع للورش والموردين الحقيقيين في أوروبا
     with st.expander("🛠️ Western European Workshop Management Panel (Add/Update Inventory)"):
         st.write("صلاحية خاصة بالموردين والورش لإدخال قطع الغيار وتحديث الأسعار باليورو.")
         new_name = st.text_input("Component Name:")
@@ -216,7 +220,7 @@ elif "Box 4 & 3:" in operational_box:
     st.dataframe(df_inventory, use_container_width=True, hide_index=True)
     
     selected_part = st.selectbox("Select Component to Procure:", df_inventory["component"])
-    part_details = df_inventory[df_inventory["component"] == selected_part].iloc[0]
+    part_details = df_inventory[df_inventory["component"] == selected_part].iloc
     st.write(f"💵 Component Cost: **€{part_details['cost']}** | Tier: `{part_details['tier']}`")
     
     if st.button("💥 Transmit Signed Certificate & Request Fund Release", use_container_width=True):
@@ -238,7 +242,7 @@ elif "Box 4 & 3:" in operational_box:
                 "destination_node": "Mustafa Samawah Endpoint (Al Muthanna, Iraq)"
             })
             st.success("🎉 Biometric authorization successful! 5% cut dispatched to Mustafa's node.")
-            play_sound("success")
+            play_sound("success") # إطلاق نغمة رنين النجاح المالي الداخلية المستقلة
             st.balloons()
             st.session_state["procure_initiated"] = False
 
@@ -248,18 +252,11 @@ elif "Box 5:" in operational_box:
 
 elif "Box 6:" in operational_box:
     st.markdown(f"#### 📊 {pack['b6_t']}")
-    
-    # 🆕 الميزة الثانية المدمجة: لوحة كربون تفاعلية ورسوم بيانية خطية دقيقة ومتحركة (Time-Series) لحماية خطوط الضغط والحرارة
+    # لوحة الرسوم البيانية التخطيطية الهيدروليكية الحية والخطية (Time-Series Charts) المدمجة من واجهتك القديمة
     time_pts = list(range(12))
-    p_wave = [sim_hyd + math.sin(x) * 14 for x in time_pts]
+    p_wave = [sim_hyd + math.sin(x) * 12 for x in time_pts]
     t_wave = [sim_temp + math.cos(x) * 6 for x in time_pts]
-    
-    chart_df = pd.DataFrame({
-        "Timeline (Seconds)": time_pts,
-        "Hydraulic Pressure Wave (Bar)": p_wave,
-        "Thermal Dissipation Core Wave (°C)": t_wave
-    }).set_index("Timeline (Seconds)")
-    
+    chart_df = pd.DataFrame({"Timeline (Seconds)": time_pts, "Hydraulic Pressure Wave (Bar)": p_wave, "Thermal Dissipation Core Wave (°C)": t_wave}).set_index("Timeline (Seconds)")
     st.line_chart(chart_df)
     st.caption("Micro-Oscillation Analytics Dashboard: Real-time sensor synchronization array.")
 
@@ -267,4 +264,3 @@ elif "Box 7:" in operational_box:
     st.markdown(f"#### 🌱 {pack['b7_t']}")
     st.metric("Live EPEX Spot Electricity Price", "€64.20/MWh")
     st.progress(0.85)
-
