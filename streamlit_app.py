@@ -1,3 +1,4 @@
+# ===========
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -6,6 +7,12 @@ import math
 import os
 from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime, timezone
+
+# 👑 GLOBAL POLYGLOT INITIALIZATION — PLACE AT THE VERY TOP
+if "selected_lang" not in st.session_state:
+    st.session_state["selected_lang"] = "English"
+
+selected_lang = st.sidebar.selectbox("🌐 Sovereign Matrix Language:", ["English", "Deutsch", "Français"], key="lang_selector_top")
 
 # 1. إعدادات الصفحة والنمط الرسومي السيادي الفخم المعزول لبيئة الاستضافة
 st.set_page_config(page_title="AutoVolt AI — Sovereign Matrix Hub", layout="wide", page_icon="👑")
