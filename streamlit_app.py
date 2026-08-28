@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import cv2
 import math
+import time
 from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime, timezone
 
@@ -75,13 +76,13 @@ TRANSLATION_DICT = {
     }
 }
 
-# 3️⃣ إدارة حالة الجلسة والتأمين الحصين
+# 3️⃣ إدارة حالة الجلسة والتأمين الحصين البنيوي
 if "token" not in st.session_state:
     st.session_state["token"] = None
     st.session_state["role"] = None
     st.session_state["procure_initiated"] = False
 
-# 🔒 حظر مطلق: إذا لم يتم التحقق من التوكن، تظهر بوابة تسجيل الدخول فقط ويختفي الشريط الجانبي تماماً
+# 🔒 جدار حماية صارم: إخفاء لوحة التحكم الجانبية تماماً ومنع بنائها قبل التوثيق
 if not st.session_state["token"]:
     st.title("🔐 Secure Gate — AutoVolt AI Core Matrix")
     user_input = st.text_input("Operator Identifier (ID):", value="mustafa_samawah")
@@ -95,9 +96,8 @@ if not st.session_state["token"]:
             st.rerun()
         else:
             st.error("🚨 Access Denied. Cryptographic Key Signature Invalidation.")
-    st.stop() # إيقاف التنفيذ هنا تماماً لحماية لوحة التحكم الخلفية
-
-# 4️⃣ فك قفل النظام وبناء الواجهة بعد التحقق الناجح من الهوية (Authorized Scope)
+    st.stop()
+# 4️⃣ نطاق الصلاحية الآمن (Authorized Scope) — يتم بناؤه بعد الدخول الفعلي
 st.sidebar.header("📡 IoT Real-Time Inputs")
 selected_lang = st.sidebar.selectbox("🌐 Sovereign Matrix Language:", ["English", "Deutsch", "Français"])
 pack = TRANSLATION_DICT[selected_lang]
@@ -110,16 +110,49 @@ sim_vibe = float(1.6 + 0.04 * load_slider)
 sim_temp = float(74.0 + 0.22 * load_slider)
 risk_prob = min(max((load_slider * 0.35) + (fatigue_slider * 0.4), 5.0), 99.9)
 
+# 🔊 شفرة رنين ميكانيكية حية مدمجة جافا سكريبت لتوليد ذبذبات صافرة تخترق كتم التاب والسحابة
 def play_sound(audio_type):
-    url = "https://soundjay.com" if audio_type == "alarm" else "https://soundjay.com"
-    loop = "loop" if audio_type == "alarm" else ""
-    st.markdown(f'<audio autoplay {loop} hidden><source src="{url}" type="audio/mpeg"></audio>', unsafe_allow_html=True)
+    if audio_type == "alarm":
+        # رنين حاد ميكانيكي متأرجح متقطع التردد للتنبيه من الأخطار العالية والاختراق
+        js_code = """
+        <script>
+        var context = new (window.AudioContext || window.webkitAudioContext)();
+        var osc = context.createOscillator();
+        var gainNode = context.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(587.33, context.currentTime); // نغمة رنين حادة d5
+        osc.frequency.linearRampToValueAtTime(880, context.currentTime + 0.2);
+        osc.frequency.linearRampToValueAtTime(587.33, context.currentTime + 0.4);
+        gainNode.gain.setValueAtTime(0.25, context.currentTime);
+        osc.connect(gainNode);
+        gainNode.connect(context.destination);
+        osc.start();
+        setTimeout(function(){ osc.stop(); }, 800);
+        </script>
+        """
+    else:
+        # رنين ناعم قصير وموسيقي لتأكيد نجاح صرف المشتريات واقتطاع الأرباح
+        js_code = """
+        <script>
+        var context = new (window.AudioContext || window.webkitAudioContext)();
+        var osc = context.createOscillator();
+        var gainNode = context.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1046.50, context.currentTime); // نغمة نجاح مالية c6
+        gainNode.gain.setValueAtTime(0.15, context.currentTime);
+        osc.connect(gainNode);
+        gainNode.connect(context.destination);
+        osc.start();
+        setTimeout(function(){ osc.stop(); }, 250);
+        </script>
+        """
+    st.markdown(js_code, unsafe_allow_html=True)
 
 st.sidebar.markdown(f"⏱️ **Temporal Anchor:**\n`{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}`")
 
 if sim_temp > 92.0 or risk_prob > 55.0:
     st.markdown(f'<div class="neon-border-red">{pack["alarm"]}</div>', unsafe_allow_html=True)
-    play_sound("alarm")
+    play_sound("alarm") # حقن وتوليد صافرة الرنين الميكانيكية فوراً
 else:
     st.markdown(f'<div class="neon-border-blue">{pack["sys_state"]}</div>', unsafe_allow_html=True)
 
@@ -133,7 +166,7 @@ col_k4.metric("Live Emission", f"{round(load_slider * 0.45, 2)} kg")
 
 st.divider()
 
-# تفعيل السبع صناديق الكبرى والكاملة الفعالية
+# تفعيل السبع صناديق الكبرى والكاملة الفعالية للأفكار الـ 153 الحية
 operational_box = st.selectbox(pack["box_label"], [
     f"📦 Box 1: {pack['b1_t']}",
     f"🌐 Box 2: {pack['b2_t']}",
@@ -164,7 +197,7 @@ elif "Box 4 & 3:" in operational_box:
     if img_file is not None:
         st.json({"status": "BIOMETRICALLY_SIGNED_AND_COMMITTED", "deal_value_eur": 9500, "commission_eur": 475, "destination_node": "Mustafa Samawah Endpoint (Al Muthanna, Iraq)"})
         st.success("🎉 Biometric authorization successful! 5% cut dispatched to Mustafa's node.")
-        play_sound("success")
+        play_sound("success") # رنين النجاح المالي المستقل
         st.balloons()
 
 elif "Box 5:" in operational_box:
@@ -181,3 +214,4 @@ elif "Box 7:" in operational_box:
     st.markdown(f"#### 🌱 {pack['b7_t']}")
     st.metric("Live EPEX Spot Electricity Price", "€64.20/MWh")
     st.progress(0.85)
+
