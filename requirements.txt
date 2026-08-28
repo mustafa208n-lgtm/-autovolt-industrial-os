@@ -1,5 +1,6 @@
-streamlit
-pandas
-numpy
+streamlit 
+pandas 
+numpy 
 opencv-python-headless
-plotly
+plotly 
+requests
