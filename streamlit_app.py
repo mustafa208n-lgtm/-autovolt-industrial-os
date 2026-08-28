@@ -278,3 +278,64 @@ elif "Module 7:" in operational_box:
     st.markdown("#### 🌱 EPEX Spot Electricity Arbitrage & Carbon Ledger View")
     st.metric("Live Market Electricity Price (DE/FR Hub)", "€64.20/MWh")
     st.progress(min(float(carbon_metrics.get('cumulative', 4350.0) if 'carbon_metrics' in locals() else 4350.0) / 5000.0, 1.0))
+
+# ====================================================================
+# 🌍 Dynamic Polyglot Real-Time Binding — Injection Extension
+# ====================================================================
+
+# مصفوفة ترجمة حية لعناوين الصناديق والمخرجات بناءً على اختيار القائد من القائمة الجانبية
+LANG_PACK_DICTIONARY = {
+    "English": {
+        "box1_title": "Sensor Pulse & European Risk Classification",
+        "vibe_status": "Vibration Sensor Status",
+        "box2_title": "Spatial Matrix Haversine Freight Engine",
+        "box3_title": "Western European Workshop Tender Nodes",
+        "box3_success": "Connected to Munich Precision Mechanics (DE) & Stuttgart Hydraulic Matrix (DE).",
+        "box4_title": "Biometric Verification Trigger & 5% Extraction Ledger",
+        "box4_info": "Procurement gateway and biometric face scanning is active for EUR (€) checkout.",
+        "box5_title": "AI Model Transparency Framework (SHAP Feature Weights)"
+    },
+    "Deutsch": {
+        "box1_title": "Sensorimpuls & Europäische Risikoklassifizierung",
+        "vibe_status": "Vibrationssensor-Status",
+        "box2_title": "Räumliche Matrix Haversine Fracht-Engine",
+        "box3_title": "Westeuropäische Werkstatt-Ausschreibungsknoten",
+        "box3_success": "Verbunden mit München Präzisionsmechanik (DE) & Stuttgart Hydraulikmatrix (DE).",
+        "box4_title": "Biometrischer Verifizierungstrigger & 5% Extraktions-Ledger",
+        "box4_info": "Beschaffungsgateway und biometrisches Gesichtsscanning sind für den EUR (€) Checkout aktiv.",
+        "box5_title": "AI-Modell-Transparenz-Framework (SHAP-Merkmalsgewichte)"
+    },
+    "Français": {
+        "box1_title": "Impulsion du capteur & Classification des risques européenne",
+        "vibe_status": "Statut du capteur de vibration",
+        "box2_title": "Moteur de fret Haversine à matrice spatiale",
+        "box3_title": "Nœuds d'appels d'offres des ateliers d'Europe de l'Ouest",
+        "box3_success": "Connecté à Munich Mécanique de Précision (DE) & Stuttgart Matrice Hydraulique (DE).",
+        "box4_title": "Déclencheur de vérification biométrique & Registre d'extraction de 5%",
+        "box4_info": "La passerelle d'approvisionnement et le scan biométrique du visage sont actifs pour le paiement en EUR (€).",
+        "box5_title": "Cadre de transparence du modèle d'IA (Poids des fonctionnalités SHAP)"
+    }
+}
+
+# قراءة واختيار حزمة النصوص المترجمة بناءً على المتغير الحالي المتفاعل في جهازك اللوحي
+active_pack = LANG_PACK_DICTIONARY[selected_lang]
+
+# إعادة حقن وتوجيه الصناديق لتقرأ النصوص الديناميكية المترجمة آلياً
+if "Box 1:" in operational_box or "Module 1:" in operational_box:
+    st.markdown(f"#### ⚙️ {active_pack['box1_title']}")
+    st.json({active_pack['vibe_status']: "NOMINAL" if sim_vibe < 4.5 else "CRITICAL_STRAIN", "hydraulic_pressure_bar": sim_hyd, "eu_ai_act_category": "High-Risk Annex III Compliant"})
+
+elif "Box 2:" in operational_box or "Module 2:" in operational_box:
+    st.markdown(f"#### 🌐 {active_pack['box2_title']}")
+    st.write(f"➡️ Distance Vector to Frankfurt Hub: **{geo_dist(48.8566, 2.3522, 50.1109, 8.6821) if 'geo_dist' in locals() else 477.9} KM**")
+
+elif "Box 3:" in operational_box or "Module 3:" in operational_box:
+    st.markdown(f"#### 🏭 {active_pack['box3_title']}")
+    st.success(active_pack['box3_success'])
+
+elif "Box 4 & 3:" in operational_box or "Module 4:" in operational_box:
+    st.markdown(f"#### 🪪 {active_pack['box4_title']}")
+    st.info(active_pack['box4_info'])
+
+elif "Box 5:" in operational_box or "Module 5:" in operational_box:
+    st.markdown(f"#### 🧠 {active_pack['box5_title']}")
