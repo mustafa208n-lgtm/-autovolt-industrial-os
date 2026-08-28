@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import cv2
 import math
-import time
 from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime, timezone
 
@@ -21,7 +20,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 2️⃣ قاموس اللغات الشامل والديناميكي (يغير كل حرف في السبعة صناديق فوراً)
+# 2️⃣ قاموس اللغات الشامل والديناميكي للسبعة صناديق
 TRANSLATION_DICT = {
     "English": {
         "title": "Sovereign Factory Platform — Europe Hub",
@@ -76,16 +75,32 @@ TRANSLATION_DICT = {
     }
 }
 
-# 3️⃣ إدارة الجلسة ونظام الأمان ضد هجمات الإغراق
+# 3️⃣ إدارة حالة الجلسة والتأمين الحصين
 if "token" not in st.session_state:
     st.session_state["token"] = None
     st.session_state["role"] = None
     st.session_state["procure_initiated"] = False
 
-# شريط التحكم الجانبي واختيار اللغة الحاكمة (مربوط ديناميكياً)
+# 🔒 حظر مطلق: إذا لم يتم التحقق من التوكن، تظهر بوابة تسجيل الدخول فقط ويختفي الشريط الجانبي تماماً
+if not st.session_state["token"]:
+    st.title("🔐 Secure Gate — AutoVolt AI Core Matrix")
+    user_input = st.text_input("Operator Identifier (ID):", value="mustafa_samawah")
+    pass_input = st.text_input("Sovereign Cryptographic Key:", type="password", value="samawah_secure_key_2026")
+    
+    if st.button("🚀 Transmit Signed Authentication Payload", use_container_width=True):
+        if user_input == "mustafa_samawah" and pass_input == "samawah_secure_key_2026":
+            st.session_state["token"] = "GRANTED"
+            st.session_state["role"] = "Supreme Commander (Mustafa)"
+            st.success("Handshake Validated! Injecting Sovereign Modules...")
+            st.rerun()
+        else:
+            st.error("🚨 Access Denied. Cryptographic Key Signature Invalidation.")
+    st.stop() # إيقاف التنفيذ هنا تماماً لحماية لوحة التحكم الخلفية
+
+# 4️⃣ فك قفل النظام وبناء الواجهة بعد التحقق الناجح من الهوية (Authorized Scope)
 st.sidebar.header("📡 IoT Real-Time Inputs")
 selected_lang = st.sidebar.selectbox("🌐 Sovereign Matrix Language:", ["English", "Deutsch", "Français"])
-pack = TRANSLATION_HUB = TRANSLATION_DICT[selected_lang]
+pack = TRANSLATION_DICT[selected_lang]
 
 load_slider = st.sidebar.slider("Press Engine Structural Load %:", 20, 100, 75)
 fatigue_slider = st.sidebar.slider("Human Operator Fatigue Index %:", 10, 100, 30)
@@ -95,7 +110,6 @@ sim_vibe = float(1.6 + 0.04 * load_slider)
 sim_temp = float(74.0 + 0.22 * load_slider)
 risk_prob = min(max((load_slider * 0.35) + (fatigue_slider * 0.4), 5.0), 99.9)
 
-# 🔊 دالة حقن أصوات الإنذار والإشعارات الصوتية التلقائية عبر التاب
 def play_sound(audio_type):
     url = "https://soundjay.com" if audio_type == "alarm" else "https://soundjay.com"
     loop = "loop" if audio_type == "alarm" else ""
@@ -103,22 +117,6 @@ def play_sound(audio_type):
 
 st.sidebar.markdown(f"⏱️ **Temporal Anchor:**\n`{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}`")
 
-# 4️⃣ بوابة الدخول وحماية الرموز المتقدمة
-if not st.session_state["token"]:
-    st.title(pack["gate_title"])
-    user_input = st.text_input("Operator Identifier (ID):", value="mustafa_samawah")
-    pass_input = st.text_input("Sovereign Cryptographic Key:", type="password", value="samawah_secure_key_2026")
-    
-    if st.button("🚀 Transmit Signed Authentication Payload", use_container_width=True):
-        if user_input == "mustafa_samawah" and pass_input == "samawah_secure_key_2026":
-            st.session_state["token"] = "GRANTED"
-            st.session_state["role"] = "Supreme Commander (Mustafa)"
-            st.success("Handshake Validated!")
-            st.rerun()
-        else: st.error("🚨 Access Denied.")
-    st.stop()
-
-# نظام الاستجابة الطارئة (إطلاق أصوات الإنذارات التلقائية)
 if sim_temp > 92.0 or risk_prob > 55.0:
     st.markdown(f'<div class="neon-border-red">{pack["alarm"]}</div>', unsafe_allow_html=True)
     play_sound("alarm")
@@ -127,7 +125,6 @@ else:
 
 st.title(f"🏭 {pack['title']}")
 
-# كروت مؤشرات الأداء الـ KPI الكبرى للمستثمرين
 col_k1, col_k2, col_k3, col_k4 = st.columns(4)
 col_k1.metric("Clearance Level", st.session_state["role"])
 col_k2.metric("AI Risk Index", f"{risk_prob:.2f}%")
@@ -136,7 +133,7 @@ col_k4.metric("Live Emission", f"{round(load_slider * 0.45, 2)} kg")
 
 st.divider()
 
-# 5️⃣ تفعيل الـ 7 صناديق الكبرى والكاملة الفعالية والأداء للـ 153 ميزة
+# تفعيل السبع صناديق الكبرى والكاملة الفعالية
 operational_box = st.selectbox(pack["box_label"], [
     f"📦 Box 1: {pack['b1_t']}",
     f"🌐 Box 2: {pack['b2_t']}",
