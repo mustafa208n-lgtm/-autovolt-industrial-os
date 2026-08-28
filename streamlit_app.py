@@ -21,7 +21,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 2️⃣ قاموس اللغات الشامل والديناميكي للسبعة صناديق
+# 2️⃣ قاموس اللغات الشامل والديناميكي المحدث للصناديق
 TRANSLATION_DICT = {
     "English": {
         "title": "Sovereign Factory Platform — Europe Hub",
@@ -76,13 +76,19 @@ TRANSLATION_DICT = {
     }
 }
 
-# 3️⃣ إدارة حالة الجلسة والتأمين الحصين البنيوي
+# 3️⃣ إدارة حالة الجلسة والتأمين الحصين
 if "token" not in st.session_state:
     st.session_state["token"] = None
     st.session_state["role"] = None
     st.session_state["procure_initiated"] = False
+if "custom_inventory" not in st.session_state:
+    st.session_state["custom_inventory"] = [
+        {"component": "Quantum Hydraulic Actuator", "stock": 4, "cost": 9500.0, "tier": "Level 3 - Supreme"},
+        {"component": "Kinetic Stress Sensor Matrix", "stock": 12, "cost": 1200.0, "tier": "Level 1 - Standard"},
+        {"component": "Thermal Dissipation Core", "stock": 2, "cost": 4800.0, "tier": "Level 2 - High Tier"}
+    ]
 
-# 🔒 جدار حماية صارم: إخفاء لوحة التحكم الجانبية تماماً ومنع بنائها قبل التوثيق
+# جدار حماية صارم: إخفاء لوحة التحكم الجانبية تماماً ومنع بنائها قبل التوثيق
 if not st.session_state["token"]:
     st.title("🔐 Secure Gate — AutoVolt AI Core Matrix")
     user_input = st.text_input("Operator Identifier (ID):", value="mustafa_samawah")
@@ -97,7 +103,8 @@ if not st.session_state["token"]:
         else:
             st.error("🚨 Access Denied. Cryptographic Key Signature Invalidation.")
     st.stop()
-# 4️⃣ نطاق الصلاحية الآمن (Authorized Scope) — يتم بناؤه بعد الدخول الفعلي
+
+# 4️⃣ نطاق الصلاحية الآمن (Authorized Scope) — يتم بناؤه بعد الدخول
 st.sidebar.header("📡 IoT Real-Time Inputs")
 selected_lang = st.sidebar.selectbox("🌐 Sovereign Matrix Language:", ["English", "Deutsch", "Français"])
 pack = TRANSLATION_DICT[selected_lang]
@@ -110,36 +117,34 @@ sim_vibe = float(1.6 + 0.04 * load_slider)
 sim_temp = float(74.0 + 0.22 * load_slider)
 risk_prob = min(max((load_slider * 0.35) + (fatigue_slider * 0.4), 5.0), 99.9)
 
-# 🔊 شفرة رنين ميكانيكية حية مدمجة جافا سكريبت لتوليد ذبذبات صافرة تخترق كتم التاب والسحابة
+# 🔊 دالة ذكية لإجبار التاب على كسر الكتم وتوليد رنين إنذار حاد داخلي فوراً رغماً عن قيود الـ iframe
 def play_sound(audio_type):
     if audio_type == "alarm":
-        # رنين حاد ميكانيكي متأرجح متقطع التردد للتنبيه من الأخطار العالية والاختراق
         js_code = """
         <script>
         var context = new (window.AudioContext || window.webkitAudioContext)();
         var osc = context.createOscillator();
         var gainNode = context.createGain();
         osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(587.33, context.currentTime); // نغمة رنين حادة d5
-        osc.frequency.linearRampToValueAtTime(880, context.currentTime + 0.2);
-        osc.frequency.linearRampToValueAtTime(587.33, context.currentTime + 0.4);
-        gainNode.gain.setValueAtTime(0.25, context.currentTime);
+        osc.frequency.setValueAtTime(659.25, context.currentTime); // رنين ميكانيكي متأرجح حاد e5
+        osc.frequency.linearRampToValueAtTime(987.77, context.currentTime + 0.2); // b5
+        osc.frequency.linearRampToValueAtTime(659.25, context.currentTime + 0.4);
+        gainNode.gain.setValueAtTime(0.3, context.currentTime);
         osc.connect(gainNode);
         gainNode.connect(context.destination);
         osc.start();
-        setTimeout(function(){ osc.stop(); }, 800);
+        setTimeout(function(){ osc.stop(); }, 700);
         </script>
         """
     else:
-        # رنين ناعم قصير وموسيقي لتأكيد نجاح صرف المشتريات واقتطاع الأرباح
         js_code = """
         <script>
         var context = new (window.AudioContext || window.webkitAudioContext)();
         var osc = context.createOscillator();
         var gainNode = context.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(1046.50, context.currentTime); // نغمة نجاح مالية c6
-        gainNode.gain.setValueAtTime(0.15, context.currentTime);
+        osc.frequency.setValueAtTime(1174.66, context.currentTime); // رنين مالي فوري d6
+        gainNode.gain.setValueAtTime(0.2, context.currentTime);
         osc.connect(gainNode);
         gainNode.connect(context.destination);
         osc.start();
@@ -150,9 +155,11 @@ def play_sound(audio_type):
 
 st.sidebar.markdown(f"⏱️ **Temporal Anchor:**\n`{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}`")
 
+# 🔘 زر فيزيائي حاسم لتمكين الصوت وتخطي قيود حظر متصفحات الـ Tab بشكل مباشر
 if sim_temp > 92.0 or risk_prob > 55.0:
     st.markdown(f'<div class="neon-border-red">{pack["alarm"]}</div>', unsafe_allow_html=True)
-    play_sound("alarm") # حقن وتوليد صافرة الرنين الميكانيكية فوراً
+    if st.sidebar.button("🔊 Force Enable Alarm Ringtone", use_container_width=True):
+        play_sound("alarm")
 else:
     st.markdown(f'<div class="neon-border-blue">{pack["sys_state"]}</div>', unsafe_allow_html=True)
 
@@ -192,13 +199,48 @@ elif "Box 3:" in operational_box:
 
 elif "Box 4 & 3:" in operational_box:
     st.markdown(f"#### 🪪 {pack['b4_t']}")
-    st.info(pack['b4_i'])
-    img_file = st.camera_input("Capture live face to register signature:")
-    if img_file is not None:
-        st.json({"status": "BIOMETRICALLY_SIGNED_AND_COMMITTED", "deal_value_eur": 9500, "commission_eur": 475, "destination_node": "Mustafa Samawah Endpoint (Al Muthanna, Iraq)"})
-        st.success("🎉 Biometric authorization successful! 5% cut dispatched to Mustafa's node.")
-        play_sound("success") # رنين النجاح المالي المستقل
-        st.balloons()
+    
+    # 🆕 الميزة الأولى المدمجة: شاشة مخصصة تفاعلية للورش والموردين لرفع وحقن السلع الحقيقية وتحديث المخزن فوراً
+    with st.expander("🛠️ Western European Workshop Management Panel (Add/Update Inventory)"):
+        st.write("صلاحية خاصة بالموردين والورش لإدخال قطع الغيار وتحديث الأسعار باليورو.")
+        new_name = st.text_input("Component Name:")
+        new_cost = st.number_input("Cost in EUR (€):", min_value=10.0, value=500.0)
+        new_tier = st.selectbox("Clearance Tier Required:", ["Level 1 - Standard", "Level 2 - High Tier", "Level 3 - Supreme"])
+        if st.button("➕ Inject Component data into Live Database Matrix"):
+            if new_name:
+                st.session_state["custom_inventory"].append({"component": new_name, "stock": 1, "cost": float(new_cost), "tier": new_tier})
+                st.success(f"Component '{new_name}' deployed to system warehouse successfully!")
+                st.rerun()
+
+    df_inventory = pd.DataFrame(st.session_state["custom_inventory"])
+    st.dataframe(df_inventory, use_container_width=True, hide_index=True)
+    
+    selected_part = st.selectbox("Select Component to Procure:", df_inventory["component"])
+    part_details = df_inventory[df_inventory["component"] == selected_part].iloc[0]
+    st.write(f"💵 Component Cost: **€{part_details['cost']}** | Tier: `{part_details['tier']}`")
+    
+    if st.button("💥 Transmit Signed Certificate & Request Fund Release", use_container_width=True):
+        st.session_state["procure_initiated"] = True
+        
+    if st.session_state["procure_initiated"]:
+        st.warning("⚠️ Liveness Scan Required to execute the 5% extraction ledger protocol.")
+        img_file = st.camera_input("Capture live face to register signature:")
+        if img_file is not None:
+            val = Decimal(str(part_details['cost']))
+            commission = (val * Decimal('0.05')).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+            escrow_locked = (val - commission).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+            
+            st.json({
+                "status": "BIOMETRICALLY_SIGNED_AND_COMMITTED",
+                "deal_value_eur": float(val),
+                "commission_eur": float(commission),
+                "escrow_locked_eur": float(escrow_locked),
+                "destination_node": "Mustafa Samawah Endpoint (Al Muthanna, Iraq)"
+            })
+            st.success("🎉 Biometric authorization successful! 5% cut dispatched to Mustafa's node.")
+            play_sound("success")
+            st.balloons()
+            st.session_state["procure_initiated"] = False
 
 elif "Box 5:" in operational_box:
     st.markdown(f"#### 🧠 {pack['b5_t']}")
@@ -206,9 +248,20 @@ elif "Box 5:" in operational_box:
 
 elif "Box 6:" in operational_box:
     st.markdown(f"#### 📊 {pack['b6_t']}")
-    time_pts = list(range(10))
-    p_wave = [sim_hyd + math.sin(x) * 12 for x in time_pts]
-    st.line_chart(pd.DataFrame({"Hydraulic Wave (Bar)": p_wave}))
+    
+    # 🆕 الميزة الثانية المدمجة: لوحة كربون تفاعلية ورسوم بيانية خطية دقيقة ومتحركة (Time-Series) لحماية خطوط الضغط والحرارة
+    time_pts = list(range(12))
+    p_wave = [sim_hyd + math.sin(x) * 14 for x in time_pts]
+    t_wave = [sim_temp + math.cos(x) * 6 for x in time_pts]
+    
+    chart_df = pd.DataFrame({
+        "Timeline (Seconds)": time_pts,
+        "Hydraulic Pressure Wave (Bar)": p_wave,
+        "Thermal Dissipation Core Wave (°C)": t_wave
+    }).set_index("Timeline (Seconds)")
+    
+    st.line_chart(chart_df)
+    st.caption("Micro-Oscillation Analytics Dashboard: Real-time sensor synchronization array.")
 
 elif "Box 7:" in operational_box:
     st.markdown(f"#### 🌱 {pack['b7_t']}")
